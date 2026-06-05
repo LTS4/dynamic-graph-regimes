@@ -1,0 +1,80 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "setuptools-git-versioning",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+
+name = "src"
+dynamic = ["version", "dependencies", "optional-dependencies"]
+authors = [
+    { name = "William Cappelletti", email = "william.cappelletti@epfl.ch" },
+    { name = "Cedric Vincent-Cuaz", email = "cedric.vincent-cuaz@epfl.ch" },
+]
+description = "Metrics, methods and scalable algorithms for detecting anomalies in dynamic networks."
+readme = "README.md"
+license = { text = "BSD-3-Clause" }
+requires-python = ">=3.12"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+    [tool.setuptools.dynamic.optional-dependencies]
+    dev = { file = ["requirements-dev.txt"] }
+
+[tool.setuptools.packages]
+find = {} # Scan the project directory with the default parameters
+
+[tool.setuptools-git-versioning]
+enabled = true
+
+[tool.pylint]
+
+    [tool.pylint.master]
+    docstring-min-length = 5
+
+    [tool.pylint.format]
+    max-line-length = 100
+
+    [tool.pylint.basic]
+    good-names = ['f', 'N', 'i', 'j', 'k', 'df', 'ex', 'lr', 'Run', '_']
+    good-names-rgxs = ['x(\d*|_[\w\d]*)', 'X(\d*|_[\w\d]*)', 'y(\d*|_[\w\d]*)']
+    no-docstring-rgx = '^_|^fit$'
+
+    [tool.pylint.typecheck]
+    # List of members which are set dynamically and missed by Pylint inference
+    # system, and so shouldn't trigger E1101 when accessed.
+    generated-members = ['numpy.*', 'scipy.*', 'sklearn.*', 'torch.*']
+
+    [tool.pylint.similarities]
+    min-similarity-lines = 5
+    ignore-imports = true
+    ignore-signatures = true
+
+    [tool.pylint.design]
+    max-attributes = 10
+    max-args = 10
+    max-positional-arguments = 10
+
+    [tool.pylint.message_control]
+    disable = [
+        "no-else-break",
+        "no-else-continue",
+        "no-else-raise",
+        "no-else-return",
+    ]
+
+[tool.black]
+
+target-version = ["py311"]
+line-length = 100
+include = '\.pyi?$'
+
+[tool.isort]
+
+profile = "black"
+multi_line_output = 3
+extend_skip_glob = ["env/*"]
